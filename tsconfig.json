@@ -27,6 +27,6 @@
   ],
   "exclude": [
     "node_modules",
-    "craco.config.ts"
+    "script"
   ]
 }

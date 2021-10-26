@@ -1,10 +1,11 @@
 /*
  * @Author: kingford
  * @Date: 2021-10-25 19:46:10
- * @LastEditTime: 2021-10-26 14:27:49
+ * @LastEditTime: 2021-10-26 19:20:29
  */
+const { whenDev } = require("@craco/craco");
+const fastRefreshCracoPlugin = require("craco-fast-refresh");
 const path = require("path");
-
 const pathResolve = (pathUrl) => path.join(__dirname, pathUrl);
 
 module.exports = {
@@ -14,6 +15,13 @@ module.exports = {
       "@": pathResolve("src"),
     },
   },
+  plugins: [
+    ...whenDev(() => [
+      {
+        plugin: fastRefreshCracoPlugin,
+      },
+    ]),
+  ],
   devServer: {
     port: 9000,
     proxy: {
