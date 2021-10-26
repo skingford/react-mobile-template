@@ -1,7 +1,7 @@
 /*
  * @Author: kingford
  * @Date: 2021-10-25 19:46:10
- * @LastEditTime: 2021-10-25 20:30:30
+ * @LastEditTime: 2021-10-26 14:27:49
  */
 const path = require("path");
 
@@ -12,6 +12,17 @@ module.exports = {
   webpack: {
     alias: {
       "@": pathResolve("src"),
+    },
+  },
+  devServer: {
+    port: 9000,
+    proxy: {
+      "/api": {
+        target: "http://stevekingford.com/",
+        changeOrigin: true,
+        secure: false,
+        xfwd: false,
+      },
     },
   },
 };
