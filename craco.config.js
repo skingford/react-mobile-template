@@ -1,10 +1,11 @@
 /*
  * @Author: kingford
  * @Date: 2021-10-25 19:46:10
- * @LastEditTime: 2021-10-27 09:28:43
+ * @LastEditTime: 2021-10-27 09:33:26
  */
 const { whenDev, whenProd } = require("@craco/craco");
 const fastRefreshCracoPlugin = require("craco-fast-refresh");
+const cracoVtkPlugin = require("craco-vtk");
 
 const webpackBar = require("webpackbar");
 const simpleProgressWebpackPlugin = require("simple-progress-webpack-plugin");
@@ -86,6 +87,9 @@ module.exports = {
       () => [
         {
           plugin: fastRefreshCracoPlugin,
+        },
+        {
+          plugin: cracoVtkPlugin(),
         },
       ],
       []
