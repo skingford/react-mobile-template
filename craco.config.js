@@ -1,13 +1,15 @@
 /*
  * @Author: kingford
  * @Date: 2021-10-25 19:46:10
- * @LastEditTime: 2021-10-26 20:54:44
+ * @LastEditTime: 2021-10-27 09:18:47
  */
-const { whenDev } = require("@craco/craco");
+const { whenDev, whenProd } = require("@craco/craco");
 const fastRefreshCracoPlugin = require("craco-fast-refresh");
 
 const webpackBar = require("webpackbar");
 const simpleProgressWebpackPlugin = require("simple-progress-webpack-plugin");
+const terserWebpackPlugin = require("terser-webpack-plugin");
+const compressionWebpackPlugin = require("compression-webpack-plugin");
 
 const path = require("path");
 const pathResolve = (pathUrl) => path.join(__dirname, pathUrl);
@@ -27,6 +29,34 @@ module.exports = {
 
       // 查看打包的进度
       new simpleProgressWebpackPlugin(),
+
+      //生产环境
+      ...whenProd(
+        () => [
+          new terserWebpackPlugin({
+            // sourceMap: true, // Must be set to true if using source-maps in production
+            terserOptions: {
+              ecma: undefined,
+              parse: {},
+              compress: {
+                warnings: false,
+                drop_console: true, // 生产环境下移除控制台所有的内容
+                drop_debugger: true, // 移除断点
+                pure_funcs: ["console.log"], // 生产环境下移除console
+              },
+            },
+          }),
+
+          // 打压缩包,注意版本
+          new compressionWebpackPlugin({
+            algorithm: "gzip",
+            test: new RegExp("\\.(" + ["js", "css"].join("|") + ")$"),
+            threshold: 1024,
+            minRatio: 0.8,
+          }),
+        ],
+        []
+      ),
     ],
   },
 
